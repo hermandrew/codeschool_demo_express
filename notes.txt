@@ -6,4 +6,5 @@
 
 - Tests are run somehow from the package.json file.  I'm not sure yet how a bunch would work.  Also, mocha is 3rd party, so if I wanna' get good at that bullshit, I'll have to look that up.But yeah, so you then you run `npm test` and it'll run whatever test scripts are in there.
 
+- Remember that we require body-parser to handle the translation of JSON into actual javascript objects (then make sure to shrinkwrap afterwards.)
 

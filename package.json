@@ -1,14 +1,15 @@
 {
   "name": "express_stb",
   "version": "1.0.0",
-  "description": "",
+  "description": "Test project from Soup to Bits",
   "main": "index.js",
   "scripts": {
     "test": "mocha test.js"
   },
-  "author": "",
+  "author": "Herm!",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.14.2",
     "express": "^4.13.3"
   },
   "devDependencies": {
