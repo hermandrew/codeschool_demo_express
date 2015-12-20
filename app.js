@@ -4,26 +4,36 @@ var app = express();
 var bodyParser = require('body-parser');
 var urlencode = bodyParser.urlencoded({ extended: false });
 
-app.use(express.static('public'));
-
-var cities = {
-  'Lotopia': 'Some description',
-  'Caspiana': 'descriptions',
-  'Indigo': 'desc'
+// Redis Connection
+var redis = require('redis');
+if (process.env.REDISTOGO_URL) {
+  var rtg = require("url").parse(process.env.REDISTOGO_URL);
+  var client = redis.createClient(rtg.port, rtg.hostname);
+  client.auth(rtg.auth.split(":")[1]);
+} else {
+  var client = redis.createClient();
 }
+
+client.select((process.env.NODE_ENV || 'development').length);
+// End Redis Connection
+
+app.use(express.static('public'));
 
 app.get('/', function(request, response) {
   response.send('OK\n');
 });
 
 app.get('/cities', function(request, response) {
-  response.json(Object.keys(cities));
+  client.hkeys('cities', function(error, names) {
+    response.json(names);
+  });
 });
 
 app.post('/cities', urlencode, function(request, response) {
   var newCity = request.body;
-  cities[newCity.name] = newCity.description;
-  response.status(201).json(newCity.name);
+  client.hset('cities', newCity.name, newCity.description, function(error) {
+    response.status(201).json(newCity.name);
+  });
 });
 
 module.exports = app;
