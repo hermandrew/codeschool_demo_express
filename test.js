@@ -97,4 +97,11 @@ describe('Deleting cities', function() {
       .expect(204, done);
   });
 
+  it('Validates city name and description', function(done) {
+    request(app)
+      .post('/cities')
+      .send('name=&description=')
+      .expect(400, done);
+  });
+
 });
